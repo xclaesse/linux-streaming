@@ -22,6 +22,7 @@
 #include "util/u_trace_marker.h"
 
 #include "vf_interface.h"
+#include "vs_static_plugins.h"
 
 #include <stdio.h>
 #include <assert.h>
@@ -757,55 +758,11 @@ out:
 // need, and finding the plugin name it corresponds to in the sidebar. Some of them (libav is an example) don't
 // correspond 1:1 in the names in the sidebar, so guessing as well as `find deps/gstreamer_android | grep <name>` helps.
 
-GST_PLUGIN_STATIC_DECLARE(app); // Definitely needed
-GST_PLUGIN_STATIC_DECLARE(autodetect); // Definitely needed
-GST_PLUGIN_STATIC_DECLARE(coreelements);
-GST_PLUGIN_STATIC_DECLARE(nice);
-GST_PLUGIN_STATIC_DECLARE(rtp);
-GST_PLUGIN_STATIC_DECLARE(rtpmanager);
-GST_PLUGIN_STATIC_DECLARE(sctp);
-GST_PLUGIN_STATIC_DECLARE(srtp);
-GST_PLUGIN_STATIC_DECLARE(dtls);
-
-//GST_PLUGIN_STATIC_DECLARE(usrsctp);
-GST_PLUGIN_STATIC_DECLARE(videoparsersbad);
-GST_PLUGIN_STATIC_DECLARE(webrtc);
-GST_PLUGIN_STATIC_DECLARE(androidmedia);
-
-GST_PLUGIN_STATIC_DECLARE(videotestsrc); // Definitely needed
-GST_PLUGIN_STATIC_DECLARE(videoconvertscale);
-GST_PLUGIN_STATIC_DECLARE(overlaycomposition);
-
-GST_PLUGIN_STATIC_DECLARE(playback); // "FFMPEG "
-// GST_PLUGIN_STATIC_DECLARE(webrtcnice);
 
 static void
 websocket_connected_cb(GObject *session, GAsyncResult *res, gpointer user_data)
 {
 	U_LOG_E("websocket_connected_cb called!");
-
-
-GST_PLUGIN_STATIC_REGISTER(app); // Definitely needed
-GST_PLUGIN_STATIC_REGISTER(autodetect); // Definitely needed
-GST_PLUGIN_STATIC_REGISTER(coreelements);
-GST_PLUGIN_STATIC_REGISTER(nice);
-GST_PLUGIN_STATIC_REGISTER(rtp);
-GST_PLUGIN_STATIC_REGISTER(rtpmanager);
-
-//GST_PLUGIN_STATIC_REGISTER(usrsctp);
-GST_PLUGIN_STATIC_REGISTER(sctp);
-GST_PLUGIN_STATIC_REGISTER(srtp);
-GST_PLUGIN_STATIC_REGISTER(dtls);
-GST_PLUGIN_STATIC_REGISTER(videoparsersbad);
-GST_PLUGIN_STATIC_REGISTER(webrtc);
-GST_PLUGIN_STATIC_REGISTER(androidmedia);
-
-GST_PLUGIN_STATIC_REGISTER(videotestsrc); // Definitely needed
-GST_PLUGIN_STATIC_REGISTER(videoconvertscale);
-GST_PLUGIN_STATIC_REGISTER(overlaycomposition);
-
-GST_PLUGIN_STATIC_REGISTER(playback); // "FFMPEG "
-// GST_PLUGIN_STATIC_REGISTER(webrtcnice);
 
 	GError *error = NULL;
 
@@ -1030,24 +987,6 @@ vf_fs_node_destroy(struct xrt_frame_node *node)
  *
  */
 
-/*
-GST_PLUGIN_STATIC_DECLARE(app); // Definitely needed
-GST_PLUGIN_STATIC_DECLARE(autodetect); // Definitely needed
-GST_PLUGIN_STATIC_DECLARE(coreelements);
-GST_PLUGIN_STATIC_DECLARE(nice);
-GST_PLUGIN_STATIC_DECLARE(rtp);
-GST_PLUGIN_STATIC_DECLARE(rtpmanager);
-GST_PLUGIN_STATIC_DECLARE(sctp);
-GST_PLUGIN_STATIC_DECLARE(srtp);
-GST_PLUGIN_STATIC_DECLARE(dtls);
-GST_PLUGIN_STATIC_DECLARE(videoparsersbad);
-GST_PLUGIN_STATIC_DECLARE(webrtc);
-GST_PLUGIN_STATIC_DECLARE(androidmedia);
-GST_PLUGIN_STATIC_DECLARE(videotestsrc); // Definitely needed
-GST_PLUGIN_STATIC_DECLARE(videoconvertscale);
-GST_PLUGIN_STATIC_DECLARE(overlaycomposition);
-GST_PLUGIN_STATIC_DECLARE(playback); // "FFMPEG "
-*/
 static struct xrt_fs *
 alloc_and_init_common(struct xrt_frame_context *xfctx,      //
                       enum xrt_format format,               //
@@ -1060,25 +999,9 @@ alloc_and_init_common(struct xrt_frame_context *xfctx,      //
 	vid->stereo_format = stereo_format;
 
 	GstBus *bus = NULL;
-/*
-    GST_PLUGIN_STATIC_REGISTER(app); // Definitely needed
-    GST_PLUGIN_STATIC_REGISTER(autodetect); // Definitely needed
-    GST_PLUGIN_STATIC_REGISTER(coreelements);
-    GST_PLUGIN_STATIC_REGISTER(nice);
-    GST_PLUGIN_STATIC_REGISTER(rtp);
-    GST_PLUGIN_STATIC_REGISTER(rtpmanager);
-    GST_PLUGIN_STATIC_REGISTER(sctp);
-    GST_PLUGIN_STATIC_REGISTER(srtp);
-	GST_PLUGIN_STATIC_REGISTER(dtls);
-    GST_PLUGIN_STATIC_REGISTER(videoparsersbad);
-    GST_PLUGIN_STATIC_REGISTER(webrtc);
-    GST_PLUGIN_STATIC_REGISTER(androidmedia);
-    GST_PLUGIN_STATIC_REGISTER(videotestsrc); // Definitely needed
-    GST_PLUGIN_STATIC_REGISTER(videoconvertscale);
-    GST_PLUGIN_STATIC_REGISTER(overlaycomposition);
 
-    GST_PLUGIN_STATIC_REGISTER(playback); // "FFMPEG "
-*/
+	vf_init_static_plugins()
+
 	int ret = os_thread_helper_init(&vid->play_thread);
 	if (ret < 0) {
 		VF_ERROR(vid, "Failed to init thread");

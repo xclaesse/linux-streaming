@@ -1,4 +1,4 @@
-add_library(pluto_vf STATIC vf_driver.c)
+add_library(pluto_vf STATIC vf_driver.c vf_static_plugins)
 target_link_libraries(pluto_vf PRIVATE xrt-interfaces aux_os aux_util
         ${GST_LIBRARIES}
         #-Wl,--whole-archive ${gstreamer_android_SOURCE_DIR}/arm64/lib/libgstreamer-1.0.a -Wl,--no-whole-archive
